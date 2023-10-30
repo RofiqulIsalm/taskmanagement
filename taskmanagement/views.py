@@ -27,7 +27,7 @@ def dologin(request):
         else:
             messages.error(request, 'User not valid...!')
             return redirect('login_page')
-@login_required(login_url='/')        
+@login_required(login_url='/login/')        
 def dologout(request):
     logout(request)
     return redirect('login_page')
@@ -67,39 +67,37 @@ def forgot(request):
 
     return render(request, 'auth/forgot.html')
 
-@login_required(login_url='/')
+@login_required(login_url='/login/')
 def desh(request):
-    tasks = Task.objects.all()
-    
+    tasks = Task.objects.filter(user=request.user) 
     context = {
         'tasks': tasks,
     }
     return render(request, 'main/desh.html', context)
-
+@login_required(login_url='/login/')
 def add_task(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
         due_date = request.POST.get('due_date')
         priority = request.POST.get('priority')
-        photo = request.FILES.get('photo')  # Assuming the file input has the name 'photo'
+        photo = request.FILES.get('photo')
 
         if title and description and due_date and priority and photo:
-            # Create a new task with the provided data
             new_task = Task(
+                user=request.user,
                 title=title,
                 description=description,
                 due_date=due_date,
                 priority=priority,
             )
-            new_task.save()  # Save the new task to the database.
+            new_task.save()
 
-            # Create a new photo and associate it with the task
             new_photo = Photo(image=photo, task=new_task)
-            new_photo.save()  # Save the new photo to the database.
+            new_photo.save()
 
+            return redirect('desh_page')
 
-            return redirect('desh_page') 
     return render(request, 'main/desh.html')
 
 def delete_task(request, task_id):
