@@ -1,0 +1,26 @@
+{% load static %}
+
+<nav class="navbar bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand">
+        <img class="img-fluid" width="100px" src="{% static 'assets/img/task.png' %}" alt="Logo">
+      </a>
+
+      <h6 style="color: white;">welcome <span class="text-warning">{{user.username}}</span></h6>
+      <ul class="nav user-menu">
+        <li class="nav-item dropdown has-arrow" style="padding-right: 70px;">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <span class="user-img">
+                    <img id="profileImage" class="rounded-circle" width="31" alt="User Image" src="{% static 'assets/img/user.jpg' %}">
+                </span>
+            </a>
+            <div class="dropdown-menu">
+               <a class="dropdown-item" href="{% url 'profile_page'%}">My Profile</a>
+               <a class="dropdown-item" href="{% url 'dologout_page'%}">Logout</a>
+            </div>
+        </li>
+        
+      </ul> 
+    </div>
+  </nav>
+

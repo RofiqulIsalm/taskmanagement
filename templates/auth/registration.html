@@ -1,0 +1,93 @@
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Task management - Register</title>
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    
+ </head>
+ <body>
+    <div class="main-wrapper login-body">
+        <div class="login-wrapper">
+        <div class="container">
+            <div class="loginbox">
+                <div class="login-left">
+                    <img class="img-fluid" width="800px" src="{% static 'assets/img/task.png' %}" alt="Logo">
+                </div>
+                <div class="login-right">
+                    <div class="login-right-wrap">
+                    <h1>Register</h1>
+                    <p class="account-subtitle">Access to Login</p>
+                    {% if messages %}
+                        {% for message in  messages %}
+                            {% if message.tags == 'error' %}    
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>!</strong> {{message}}
+                                    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button> -->
+                                </div>
+                            {% endif %} 
+                        {% endfor %}
+                    {% endif %}
+                    <form action="{% url 'register_page' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input required class="form-control" type="text" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input required class="form-control" type="text" placeholder="Email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <input required class="form-control" type="text" placeholder="Password" name="password" id="pwd1" onkeyup="chack_password()">
+                        </div>
+                        <div class="form-group">
+                            <input required class="form-control" type="text" placeholder="Confrime-Password" name="repassword" id="pwd2" onkeyup="chack_password()">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit" id="pwdbtn">Register</button>
+                        </div>
+                    </form>
+                    
+                    <div class="login-or">
+                        <span class="or-line"></span>
+                        <span class="span-or">or</span>
+                    </div>
+                    <!-- <div class="social-login">
+                        <span>Login with</span>
+                        <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="google"><i class="fab fa-google"></i></a>
+                    </div> -->
+                    <div class="text-center dont-have">Have an account? <a href="{%url 'login_page'%}">Login</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function chack_password(){
+           let p = $("#pwd1").val();
+           let cp = $("#pwd2").val();
+           
+           if(p==cp){
+              $("#pwd1").css("border","1px solid green");
+              $("#pwd2").css("border","1px solid green");
+              $("#pwdbtn").removeAttr("disabled");
+           }else{
+              $("#pwd1").css("border","1px solid red");
+              $("#pwd2").css("border","1px solid red");
+              $("#pwdbtn").attr("disabled", "disabled");
+           }
+        }
+      </script>
+</body>
+</html>

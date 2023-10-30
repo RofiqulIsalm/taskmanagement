@@ -1,0 +1,66 @@
+<!-- 0W;0e80W;0e8 -->
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+<style>
+    .img-update{
+        position: relative;
+    }
+    .img-update i{
+        color: white;
+        position: absolute;
+        top: 40px;
+        left: 10px;
+        background-color: gray;
+        padding: 10px;
+        border-radius: 50%;
+        text-align: center;
+        transition: 0.5s;
+
+    }
+    .img-update i:hover{
+        background-color: rgba(128, 128, 128, 0.575);
+        font-size: 18px;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content container-fluid"style="margin-top:25px">
+
+                         <h5 class="card-title">Change Password</h5>
+                               <form action="{% url 'password_change' %}" method="post">
+                                 {% csrf_token %}
+                                  <div class="form-group">
+                                     <label>Old Password</label>
+                                     <input required type="password" name="cpwd" class="form-control">
+                                  </div>
+                                  <div class="form-group">
+                                     <label>New Password</label>
+                                     <input required type="password" name="npwd" id="npwd" class="form-control" onkeyup="chack_password()">
+                                  </div>
+                                  <div class="form-group">
+                                     <label>Confirm Password</label>
+                                     <input required type="password" name="cnpwd" id="cnpwd" class="form-control" onkeyup="chack_password()">
+                                  </div>
+                                  
+                                  <button class="btn btn-primary" style="margin-top: 10px;" type="submit" id="cpwdbtn">Change Password</button>
+                               </form>
+ 
+
+ <script>
+   function chack_password(){
+      let p = $("#npwd").val();
+      let cp = $("#cnpwd").val();
+      
+      if(p==cp){
+         $("#npwd").css("border","1px solid green");
+         $("#cnpwd").css("border","1px solid green");
+         $("#cpwdbtn").removeAttr("disabled");
+      }else{
+         $("#npwd").css("border","1px solid red");
+         $("#cnpwd").css("border","1px solid red");
+         $("#cpwdbtn").attr("disabled", "disabled");
+      }
+   }
+ </script>
+{% endblock content %}
