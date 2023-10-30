@@ -1,0 +1,100 @@
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Photos</th>
+            <th>Due Date</th>
+            <th>Created At</th>
+            <th>Priority</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td>
+                <span class="user-img" style="margin-left: 40%;">
+                    {% for photo in task.photos.all|slice:":3" %}
+                    <img class="rounded-circle" width="31" height="31" style="margin-left: -20px;" alt="Task Photo" src="{{ photo.image.url }}">
+                    {% endfor %}
+                </span>
+            </td>
+            <td>{{ task.due_date }}</td>
+            <td>{{ task.created_at }}</td>
+            <td>
+                {% if task.priority == 'low' %}
+                    <span class="btn btn-success">Low</span>
+                {% elif task.priority == 'medium' %}
+                    <span class="btn btn-warning">Medium</span>
+                {% elif task.priority == 'high' %}
+                    <span class="btn btn-danger">High</span>
+                {% endif %}
+            </td>
+            <td>
+                <i class='bx bx-edit' data-toggle="modal" data-target="#editei{{ task.id }}"></i>
+                <i class='bx bx-trash' data-toggle="modal" data-target="#deleteicon{{ task.id }}"></i>
+                <div class="modal fade" id="editei{{ task.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Edit Task</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Edit task form for the specific task -->
+                                <form method="post" action="{% url 'edit_task' task.id %}">
+                                    {% csrf_token %}
+                                    <div style="margin-bottom: 10px;">
+                                        <label for="title">Title</label>
+                                        <input id="title" required type="text" name="title" class="form-control" value="{{ task.title }}">
+                                    </div>
+                                    <div style="margin-bottom: 10px;">
+                                        <label for="description">Description</label>
+                                        <textarea id="description" required name="description" class="form-control">{{ task.description }}</textarea>
+                                    </div>
+                                    <div style="margin-bottom: 10px;">
+                                        <label for="due_date">Due Date</label>
+                                        <input id="due_date" required type="date" name="due_date" class="form-control" value="{{ task.due_date }}">
+                                    </div>
+                                    <div style="margin-bottom: 10px;">
+                                        <label for="priority">Priority</label>
+                                        <select id="priority" name="priority" class="form-control">
+                                            <option value="low" {% if task.priority == "low" %}selected{% endif %}>Low</option>
+                                            <option value="medium" {% if task.priority == "medium" %}selected{% endif %}>Medium</option>
+                                            <option value="high" {% if task.priority == "high" %}selected{% endif %}>High</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="deleteicon{{ task.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-left:30%;">
+                                    <a class="btn btn-warning close" style="margin-left: 10px;" type="button" onclick="closeModal()">Cancel</a>
+                                    <a href="{% url 'delete_task' task.id %}" class="btn btn-danger" style="margin-left: 10px;" type="button">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

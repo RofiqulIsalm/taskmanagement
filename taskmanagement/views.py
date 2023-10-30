@@ -114,22 +114,21 @@ def task_list(request):
     return render(request, 'main/desh.html', {'tasks': tasks})
 
 def edit_task(request, task_id):
-    task = get_object_or_404(Task, id=task_id)  # Retrieve the task by ID
+    task = get_object_or_404(Task, id=task_id)
 
     if request.method == 'POST':
-        # Handle the form submission to update the task
+
         title = request.POST.get('title')
         description = request.POST.get('description')
         due_date = request.POST.get('due_date')
         priority = request.POST.get('priority')
-        # Update the task fields based on the form data
+
         task.title = title
         task.description = description
         task.due_date = due_date
         task.priority = priority
-        task.save()  # Save the updated task
-        return redirect('desh_page')  # Redirect to the task list view after successful update
-
+        task.save() 
+        return redirect('desh_page') 
     return render(request, 'main/desh.html', {'task': task})
 
 def search_task(request):

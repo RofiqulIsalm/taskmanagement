@@ -462,7 +462,7 @@
                         
                     </td>
                     <td>
-                        <i class='bx bx-edit' data-toggle="modal" data-target="#editei"></i>
+                        <i class='bx bx-edit' data-toggle="modal" data-target="#editei{{ task.id }}"></i>
                         
                         <i class='bx bx-trash' data-toggle="modal" data-target="#deleteicon"></i>
                         
@@ -511,7 +511,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="editei" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="editei{{ task.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -521,6 +521,7 @@
                             </button>
                             </div>
                             <div class="modal-body">
+                                <!-- Edit task form for the specific task -->
                                 <form method="post" action="{% url 'edit_task' task.id %}">
                                     {% csrf_token %}
                                     <div style="margin-bottom: 10px;">
@@ -545,7 +546,6 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                 </form>
-                                
                             </div>
                         </div>
                     </div>
@@ -559,6 +559,13 @@
         
     </table>
   </section>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function(){
+        $('[data-toggle="modal"]').modal();
+    });
+</script>
     
 
 {% endblock content %}
